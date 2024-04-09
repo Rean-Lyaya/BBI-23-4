@@ -1,0 +1,48 @@
+//Лаба6 уровень 2 номер 2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+struct Student
+{
+    public string Name;
+    private int[] Grades;
+
+    public Student(string name, int[] grades)
+    {
+        Name = name;
+        Grades = grades;
+    }
+
+    // Метод для расчета среднего балла
+    public double CalculateAverageGrade() => Grades.Average();
+
+    // Метод для проверки наличия двойки среди оценок
+    public bool HasFailingGrade() => Grades.Contains(2);
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов с оценками
+        List<Student> students = new List<Student>
+        {
+            new Student("Иванов Иван", new int[] {5, 4, 3}),
+            new Student("Петров Петр", new int[] {2, 3, 4}),
+            new Student("Сидорова Мария", new int[] {4, 5, 5}),
+            // Добавьте больше студентов здесь
+        };
+
+        // Фильтрация студентов, сдавших все экзамены, и сортировка по среднему баллу
+        var successfulStudents = students.Where(s => !s.HasFailingGrade())
+                                          .OrderByDescending(s => s.CalculateAverageGrade())
+                                          .ToList();
+
+        Console.WriteLine("Список студентов, успешно сдавших экзамены:");
+        foreach (var student in successfulStudents)
+        {
+            Console.WriteLine($"{student.Name} - Средний балл: {student.CalculateAverageGrade():F2}");
+        }
+    }
+}
