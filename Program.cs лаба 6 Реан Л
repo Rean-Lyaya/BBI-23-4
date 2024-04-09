@@ -1,0 +1,158 @@
+﻿// See https://aka.ms/new-console-template for more information
+//уровень 1 номер 5
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+
+// Определение структуры Student
+struct Student
+{
+    public string Name;
+    public int Grade;
+    public int MissedClasses;
+
+    public Student(string name, int grade, int missedClasses)
+    {
+        Name = name;
+        Grade = grade;
+        MissedClasses = missedClasses;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов
+        List<Student> students = new List<Student>
+        {
+            new Student("Иванов Иван", 3, 5),
+            new Student("Петров Петр", 2, 3),
+            // Добавьте больше студентов здесь
+            new Student("Сидорова Мария", 2, 7),
+        };
+
+        // Фильтрация неуспевающих студентов и сортировка по количеству пропущенных занятий
+        var failingStudents = students.Where(s => s.Grade == 2)
+                                       .OrderByDescending(s => s.MissedClasses)
+                                       .ToList();
+
+        Console.WriteLine("Список неуспевающих студентов (оценка «2»), отсортированный по количеству пропущенных занятий:");
+        foreach (var student in failingStudents)
+        {
+            Console.WriteLine($"{student.Name} - Пропущено занятий: {student.MissedClasses}");
+        }
+    }
+}
+
+
+
+
+
+//уровень 2 номер 2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+struct Student
+{
+    public string Name;
+    private int[] Grades;
+
+    public Student(string name, int[] grades)
+    {
+        Name = name;
+        Grades = grades;
+    }
+
+    // Метод для расчета среднего балла
+    public double CalculateAverageGrade() => Grades.Average();
+
+    // Метод для проверки наличия двойки среди оценок
+    public bool HasFailingGrade() => Grades.Contains(2);
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов с оценками
+        List<Student> students = new List<Student>
+        {
+            new Student("Иванов Иван", new int[] {5, 4, 3}),
+            new Student("Петров Петр", new int[] {2, 3, 4}),
+            new Student("Сидорова Мария", new int[] {4, 5, 5}),
+            // Добавьте больше студентов здесь
+        };
+
+        // Фильтрация студентов, сдавших все экзамены, и сортировка по среднему баллу
+        var successfulStudents = students.Where(s => !s.HasFailingGrade())
+                                          .OrderByDescending(s => s.CalculateAverageGrade())
+                                          .ToList();
+
+        Console.WriteLine("Список студентов, успешно сдавших экзамены:");
+        foreach (var student in successfulStudents)
+        {
+            Console.WriteLine($"{student.Name} - Средний балл: {student.CalculateAverageGrade():F2}");
+        }
+    }
+}
+
+
+
+//уровень 3 номер 2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+struct Team
+{
+    public string Name;
+    public int Points;
+
+    public Team(string name, int points)
+    {
+        Name = name;
+        Points = points;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список команд первой группы
+        List<Team> groupOne = new List<Team>
+        {
+            new Team("Команда A1", 10),
+            new Team("Команда A2", 12),
+            // Добавьте команды для первой группы
+        };
+
+        // Дополните список до 12 команд для первой группы
+
+        // Список команд второй группы
+        List<Team> groupTwo = new List<Team>
+        {
+            new Team("Команда B1", 11),
+            new Team("Команда B2", 9),
+            // Добавьте команды для второй группы
+        };
+
+        // Дополните список до 12 команд для второй группы
+
+        // Отбор 6 лучших команд из каждой группы
+        var topTeamsFromGroupOne = groupOne.OrderByDescending(team => team.Points).Take(6).ToList();
+        var topTeamsFromGroupTwo = groupTwo.OrderByDescending(team => team.Points).Take(6).ToList();
+
+        // Объединение списков лучших команд обеих групп
+        var teamsInSecondStage = topTeamsFromGroupOne.Concat(topTeamsFromGroupTwo).ToList();
+
+        Console.WriteLine("Команды, прошедшие во второй этап соревнований:");
+        foreach (var team in teamsInSecondStage)
+        {
+            Console.WriteLine($"{team.Name} - Очки: {team.Points}");
+        }
+    }
+}
