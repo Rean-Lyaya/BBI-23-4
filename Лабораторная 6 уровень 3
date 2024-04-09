@@ -1,0 +1,55 @@
+//уровень 3 номер 2
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+struct Team
+{
+    public string Name;
+    public int Points;
+
+    public Team(string name, int points)
+    {
+        Name = name;
+        Points = points;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список команд первой группы
+        List<Team> groupOne = new List<Team>
+        {
+            new Team("Команда A1", 10),
+            new Team("Команда A2", 12),
+            // Добавьте команды для первой группы
+        };
+
+        // Дополните список до 12 команд для первой группы
+
+        // Список команд второй группы
+        List<Team> groupTwo = new List<Team>
+        {
+            new Team("Команда B1", 11),
+            new Team("Команда B2", 9),
+            // Добавьте команды для второй группы
+        };
+
+        // Дополните список до 12 команд для второй группы
+
+        // Отбор 6 лучших команд из каждой группы
+        var topTeamsFromGroupOne = groupOne.OrderByDescending(team => team.Points).Take(6).ToList();
+        var topTeamsFromGroupTwo = groupTwo.OrderByDescending(team => team.Points).Take(6).ToList();
+
+        // Объединение списков лучших команд обеих групп
+        var teamsInSecondStage = topTeamsFromGroupOne.Concat(topTeamsFromGroupTwo).ToList();
+
+        Console.WriteLine("Команды, прошедшие во второй этап соревнований:");
+        foreach (var team in teamsInSecondStage)
+        {
+            Console.WriteLine($"{team.Name} - Очки: {team.Points}");
+        }
+    }
+}
