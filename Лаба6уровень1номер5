@@ -1,0 +1,48 @@
+//лаба 6 уровень 1 номер 5
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+
+// Определение структуры Student
+struct Student
+{
+    public string Name;
+    public int Grade;
+    public int MissedClasses;
+
+    public Student(string name, int grade, int missedClasses)
+    {
+        Name = name;
+        Grade = grade;
+        MissedClasses = missedClasses;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов
+        List<Student> students = new List<Student>
+        {
+            new Student("Иванов Иван", 3, 5),
+            new Student("Петров Петр", 2, 3),
+            // Добавьте больше студентов здесь
+            new Student("Сидорова Мария", 2, 7),
+        };
+
+        // Фильтрация неуспевающих студентов и сортировка по количеству пропущенных занятий
+        var failingStudents = students.Where(s => s.Grade == 2)
+                                       .OrderByDescending(s => s.MissedClasses)
+                                       .ToList();
+
+        Console.WriteLine("Список неуспевающих студентов (оценка «2»), отсортированный по количеству пропущенных занятий:");
+        foreach (var student in failingStudents)
+        {
+            Console.WriteLine($"{student.Name} - Пропущено занятий: {student.MissedClasses}");
+        }
+    }
+}
+
+
