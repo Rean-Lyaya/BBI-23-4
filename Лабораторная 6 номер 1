@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+// Определение структуры Runner
+struct Runner
+{
+    private string _lastName;
+    private string _group;
+    private string _teacherLastName;
+    private double _result; // Время в секундах
+
+    public Runner(string lastName, string group, string teacherLastName, double result)
+    {
+        _lastName = lastName;
+        _group = group;
+        _teacherLastName = teacherLastName;
+        _result = result;
+    }
+
+    // Метод для вывода информации о бегуне
+    public void DisplayInfo()
+    {
+        string normative = _result <= 120 ? "Выполнен" : "Не выполнен";
+        Console.WriteLine($"{_lastName,-10}\t{_group,-10}\t{_teacherLastName,-12}\t{_result,-10}\t{normative}");
+    }
+
+    // Методы доступа для полей, если они понадобятся вне структуры
+    public double GetResult() => _result;
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список участниц
+        // Список участниц
+        List<Runner> runners = new List<Runner>
+        {
+            new Runner("Иванова", "Группа 1", "Петров", 115),
+            new Runner("Петрова", "Группа 1", "Иванов", 130),
+            new Runner("Смирнова", "Группа 2", "Сидоров", 125),
+            new Runner("Кузнецова", "Группа 2", "Попов", 140),
+            new Runner("Соколова", "Группа 1", "Михайлов", 110),
+            new Runner("Попова", "Группа 2", "Алексеев", 135),
+            new Runner("Лебедева", "Группа 1", "Федоров", 120),
+            new Runner("Козлова", "Группа 2", "Николаев", 145),
+            new Runner("Новикова", "Группа 1", "Волков", 118),
+            new Runner("Морозова", "Группа 2", "Соловьёв", 132),
+        };
+
+        // Сортировка участниц по результату
+        var sortedRunners = runners.OrderBy(r => r.GetResult()).ToList();
+
+        Console.WriteLine("Фамилия\tГруппа\tПреподаватель\tРезультат\tНорматив");
+        foreach (var runner in sortedRunners)
+        {
+            runner.DisplayInfo();
+        }
+
+        // Подсчёт участниц, выполнивших норматив
+        int normativePassed = sortedRunners.Count(r => r.GetResult() <= 120);
+        Console.WriteLine($"\nСуммарное количество участниц, выполнивших норматив: {normativePassed}");
+    }
+}
