@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+struct Student
+{
+    private string _name;
+    private int[] _grades;
+
+    public Student(string name, int[] grades)
+    {
+        _name = name;
+        _grades = grades;
+    }
+
+    // Метод для расчета среднего балла
+    public double CalculateAverageGrade() => _grades.Average();
+
+    // Метод для проверки наличия двойки среди оценок
+    public bool HasFailingGrade() => _grades.Contains(2);
+
+    // Метод для вывода информации о студенте
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"{_name} - Средний балл: {CalculateAverageGrade():F2}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов с оценками
+        List<Student> students = new List<Student>
+        {
+            new Student("Иванов Иван", new int[] {5, 4, 3}),
+            new Student("Петров Петр", new int[] {2, 3, 4}),
+            new Student("Сидорова Мария", new int[] {4, 5, 5}),
+            new Student("Смирнова Анна", new int[] {5, 5, 5})
+        };
+
+        // Фильтрация студентов, сдавших все экзамены, и сортировка по среднему баллу
+        var successfulStudents = students.Where(s => !s.HasFailingGrade())
+                                          .OrderByDescending(s => s.CalculateAverageGrade())
+                                          .ToList();
+
+        Console.WriteLine("Список студентов, успешно сдавших экзамены:");
+        foreach (var student in successfulStudents)
+        {
+            student.DisplayInfo();
+        }
+    }
+}
