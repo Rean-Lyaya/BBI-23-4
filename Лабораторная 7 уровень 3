@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+// Базовый класс для футбольных команд
+abstract class FootballTeam
+{
+    public string Name { get; private set; }
+    public int Points { get; private set; }
+    public string Gender { get; private set; }
+
+    protected FootballTeam(string name, int points, string gender)
+    {
+        Name = name;
+        Points = points;
+        Gender = gender;
+    }
+
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"{Name} ({Gender}) - Очки: {Points}");
+    }
+}
+
+// Класс для женских футбольных команд
+class WomenFootballTeam : FootballTeam
+{
+    public WomenFootballTeam(string name, int points)
+        : base(name, points, "женская команда") { }
+}
+
+// Класс для мужских футбольных команд
+class MenFootballTeam : FootballTeam
+{
+    public MenFootballTeam(string name, int points)
+        : base(name, points, "мужская команда") { }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список женских футбольных команд
+        List<FootballTeam> womenTeams = new List<FootballTeam>
+        {
+            new WomenFootballTeam("Команда W1", 10),
+            new WomenFootballTeam("Команда W2", 12),
+            new WomenFootballTeam("Команда W3", 8),
+            new WomenFootballTeam("Команда W4", 15),
+            new WomenFootballTeam("Команда W5", 7),
+            new WomenFootballTeam("Команда W6", 13),
+            new WomenFootballTeam("Команда W7", 9),
+            new WomenFootballTeam("Команда W8", 11),
+            new WomenFootballTeam("Команда W9", 6),
+            new WomenFootballTeam("Команда W10", 14),
+            new WomenFootballTeam("Команда W11", 5),
+            new WomenFootballTeam("Команда W12", 16),
+        };
+
+        // Список мужских футбольных команд
+        List<FootballTeam> menTeams = new List<FootballTeam>
+        {
+            new MenFootballTeam("Команда M1", 11),
+            new MenFootballTeam("Команда M2", 9),
+            new MenFootballTeam("Команда M3", 17),
+            new MenFootballTeam("Команда M4", 8),
+            new MenFootballTeam("Команда M5", 12),
+            new MenFootballTeam("Команда M6", 7),
+            new MenFootballTeam("Команда M7", 15),
+            new MenFootballTeam("Команда M8", 10),
+            new MenFootballTeam("Команда M9", 13),
+            new MenFootballTeam("Команда M10", 6),
+            new MenFootballTeam("Команда M11", 14),
+            new MenFootballTeam("Команда M12", 18),
+        };
+
+        // Отбор 6 лучших женских команд
+        var topWomenTeams = womenTeams.OrderByDescending(team => team.Points).Take(6).ToList();
+
+        // Отбор 6 лучших мужских команд
+        var topMenTeams = menTeams.OrderByDescending(team => team.Points).Take(6).ToList();
+
+        // Объединение списков лучших команд и сортировка итогового списка
+        var topTeams = topWomenTeams.Concat(topMenTeams)
+                                    .OrderByDescending(team => team.Points)
+                                    .ToList();
+
+        // Вывод итогового списка команд
+        Console.WriteLine("Топ 12 футбольных команд:");
+        foreach (var team in topTeams)
+        {
+            team.DisplayInfo();
+        }
+    }
+}
