@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+// Определение класса Person, представляющего человека
+class Person
+{
+    protected string _firstName;  // Имя человека
+    protected string _lastName;   // Фамилия человека
+
+    // Конструктор для инициализации имени и фамилии человека
+    public Person(string firstName, string lastName)
+    {
+        _firstName = firstName;
+        _lastName = lastName;
+    }
+
+    // Свойство для получения полного имени
+    public string FullName => $"{_lastName} {_firstName}";
+}
+
+// Определение класса Student, представляющего учащегося, наследующегося от Person
+class Student : Person
+{
+    private static int _idCounter = 0; // Счетчик для генерации уникальных идентификаторов
+    private int _studentId;            // Идентификатор студента
+    private int[] _grades;             // Массив оценок студента
+
+    // Конструктор для инициализации имени, фамилии, оценок и генерации уникального идентификатора
+    public Student(string firstName, string lastName, int[] grades) : base(firstName, lastName)
+    {
+        _studentId = ++_idCounter;
+        _grades = grades;
+    }
+
+    // Метод для расчета среднего балла студента
+    public double CalculateAverageGrade() => _grades.Average();
+
+    // Метод для проверки наличия двойки среди оценок
+    public bool HasFailingGrade() => _grades.Contains(2);
+
+    // Свойство для получения идентификатора студента
+    public int StudentId => _studentId;
+
+    // Метод для вывода информации о студенте
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"ФИО: {FullName}, ИД: {_studentId}, Средний балл: {CalculateAverageGrade():F2}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Список студентов с оценками
+        List<Student> students = new List<Student>
+        {
+            new Student("Иван", "Иванов", new int[] {5, 4, 3}),
+            new Student("Петр", "Петров", new int[] {2, 3, 4}),
+            new Student("Мария", "Сидорова", new int[] {4, 5, 5}),
+            new Student("Анна", "Смирнова", new int[] {5, 5, 5})
+        };
+
+        // Фильтрация студентов, сдавших все экзамены, и сортировка по среднему баллу
+        var successfulStudents = students.Where(s => !s.HasFailingGrade())
+                                          .OrderByDescending(s => s.CalculateAverageGrade())
+                                          .ToList();
+
+        Console.WriteLine("Список студентов, успешно сдавших экзамены:");
+        foreach (var student in successfulStudents)
+        {
+            student.DisplayInfo();
+        }
+    }
+}
